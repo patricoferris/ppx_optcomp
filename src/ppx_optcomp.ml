@@ -481,7 +481,9 @@ let map =
       in
       let x =
         match x with
-        | Pexp_function cs -> Pexp_function (List.filter_map cs ~f)
+        | Pexp_function (params, constraints, Pfunction_cases (cs, loc, attrs)) ->
+          let new_cases = List.filter_map cs ~f in
+          Pexp_function (params, constraints, Pfunction_cases (new_cases, loc, attrs))
         | Pexp_match (e, cs) -> Pexp_match (super#expression env e, List.filter_map cs ~f)
         | Pexp_try (e, cs) -> Pexp_try (super#expression env e, List.filter_map cs ~f)
         | _ -> x
